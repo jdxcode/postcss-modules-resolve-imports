@@ -1,0 +1,5 @@
+.app
+{
+  composes: d from './external.css';
+  color: blue;
+}

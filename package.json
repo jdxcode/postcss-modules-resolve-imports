@@ -1,0 +1,32 @@
+{
+  "name": "postcss-modules-resolve-imports",
+  "version": "1.0.0",
+  "description": "Resolves ICSS imports",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test:unit",
+    "test:unit": "mocha --require test/setup.js --ui tdd test/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sullenor/postcss-modules-resolve-imports.git"
+  },
+  "keywords": [
+    "css-modules"
+  ],
+  "author": "Alexey Litvinov",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sullenor/postcss-modules-resolve-imports/issues"
+  },
+  "homepage": "https://github.com/sullenor/postcss-modules-resolve-imports#readme",
+  "dependencies": {
+    "postcss": "^5.0.17"
+  },
+  "devDependencies": {
+    "mocha": "^2.4.5",
+    "postcss-modules-extract-imports": "^1.0.0",
+    "postcss-modules-local-by-default": "^1.0.1",
+    "postcss-modules-scope": "^1.0.0"
+  }
+}
