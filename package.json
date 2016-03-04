@@ -4,8 +4,9 @@
   "description": "Resolves ICSS imports",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test:unit",
-    "test:unit": "mocha --require test/setup.js --ui tdd test/index.js"
+    "test": "npm run test:node",
+    "test:node": "$npm_package_scripts_test_unit --use_strict",
+    "test:unit": "mocha --require test/setup.js --ui tdd test/index.js --harmony_destructuring"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,7 @@
   },
   "homepage": "https://github.com/sullenor/postcss-modules-resolve-imports#readme",
   "dependencies": {
+    "lodash": "^4.6.1",
     "postcss": "^5.0.17"
   },
   "devDependencies": {
