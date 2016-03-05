@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "npm run test:node",
-    "test:node": "$npm_package_scripts_test_unit --use_strict",
-    "test:unit": "mocha --require test/setup.js --ui tdd test/index.js --harmony_destructuring"
+    "test:node": "$npm_package_scripts_test_unit",
+    "test:unit": "mocha --require test/setup.js --ui tdd test/index.js --harmony_destructuring --use_strict"
   },
   "repository": {
     "type": "git",

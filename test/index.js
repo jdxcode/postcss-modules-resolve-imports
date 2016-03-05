@@ -11,16 +11,21 @@ const resolve = require('path').resolve;
 
 const css = readFileSync(resolve('test/source.css'), 'utf8');
 
-const result = postcss([
-  LocalByDefault,
-  ExtractImports,
-  Scope,
-  ResolveImports,
-  RemoveExports,
-])
-  .process(css, {from: resolve('test/source.css')})
-  .then(result => {
-    // console.log(result.root);
+suite('prove of concept', () => {
+  test('give me a hope', done => {
+    postcss([
+      LocalByDefault,
+      ExtractImports,
+      Scope,
+      ResolveImports,
+      RemoveExports,
+    ])
+    .process(css, {from: resolve('test/source.css')})
+    .then(result => {
+      console.log(result.css);
+      console.log(result.root);
+      done();
+    })
+    .catch(done);
   });
-
-console.log(result);
+});
