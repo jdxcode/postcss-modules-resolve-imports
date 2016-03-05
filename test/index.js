@@ -9,7 +9,7 @@ const RemoveExports = require('../removeExports');
 const readFileSync = require('fs').readFileSync;
 const resolve = require('path').resolve;
 
-const css = readFileSync(resolve('test/source.css'), 'utf8');
+const css = readFileSync(resolve('test/cases/source.css'), 'utf8');
 
 suite('prove of concept', () => {
   test('give me a hope', done => {
@@ -20,10 +20,10 @@ suite('prove of concept', () => {
       ResolveImports,
       RemoveExports,
     ])
-    .process(css, {from: resolve('test/source.css')})
+    .process(css, {from: resolve('test/cases/source.css')})
     .then(result => {
-      console.log(result.css);
       console.log(result.root);
+      console.log(result.css);
       done();
     })
     .catch(done);
