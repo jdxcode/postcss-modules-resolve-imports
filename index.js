@@ -4,6 +4,7 @@ const postcss = require('postcss');
 const queue = require('async').queue;
 const readFile = require('fs').readFile;
 const resolve = require('path').resolve;
+const uniq = require('lodash').uniq;
 
 const importRegexp = /^:import\((.+)\)$/;
 const nameOfTheCurrentPlugin = 'postcss-modules-resolve-imports';
@@ -92,7 +93,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
         const files = Object.keys(traces).sort(traceKeySorter).map(t => traces[t]);
         files.reverse();
 
-        files.forEach(file => tree.prepend(cache[file].nodes));
+        uniq(files).forEach(file => tree.prepend(cache[file].nodes));
 
         return tree;
       });
