@@ -1,9 +1,3 @@
-._test_cases_nested_imports_should_be_first_header__header
-{
-
-    text-decoration: underline
-}
-
 ._test_cases_nested_imports_should_be_first_theme__chamois
 {
 
@@ -26,6 +20,12 @@
 {
 
     text-decoration: none
+}
+
+._test_cases_nested_imports_should_be_first_header__header
+{
+
+    text-decoration: underline
 }
 
 ._test_cases_nested_imports_should_be_first_source__header

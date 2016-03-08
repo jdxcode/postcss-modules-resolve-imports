@@ -109,10 +109,10 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
           return _;
         }
 
-        const files = Object.keys(traces).sort(traceKeySorter).map(t => traces[t]);
+        const files = uniq(Object.keys(traces).sort(traceKeySorter).map(t => traces[t]));
         files.reverse();
 
-        uniq(files).forEach(file => tree.prepend(cache[file].nodes));
+        files.forEach(file => tree.prepend(cache[file].nodes));
 
         return tree;
       });
