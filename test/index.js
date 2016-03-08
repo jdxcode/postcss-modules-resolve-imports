@@ -32,6 +32,10 @@ function describeTest(testCase) {
 
   const expectedTokens = JSON.parse(readfile(testCase, 'expected.json'));
 
+  // if (basename(testCase) !== 'single-import-export') {
+  //   return;
+  // }
+
   // @todo add a small shortcut to choose certain tests
   test(basename(testCase), done => {
     const root = runner

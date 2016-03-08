@@ -1,0 +1,12 @@
+._test_cases_single_import_export_colors__blackShadow
+{
+  box-shadow: 0 0 10px -2px black;
+}
+._test_cases_single_import_export_colors__redBorder
+{
+  border: 1px solid red;
+}
+._test_cases_single_import_export_source__localName
+{
+  color: red;
+}
