@@ -1,3 +1,4 @@
+const assign = require('lodash').assign;
 const dirname = require('path').dirname;
 const plugin = require('postcss').plugin;
 const postcss = require('postcss');
@@ -6,6 +7,9 @@ const readFile = require('fs').readFile;
 const resolve = require('path').resolve;
 const uniq = require('lodash').uniq;
 
+const postcssExtractExports = require('postcss-modules-extract-exports');
+
+const exportRegexp = /^:export$/;
 const importRegexp = /^:import\((.+)\)$/;
 const nameOfTheCurrentPlugin = 'postcss-modules-resolve-imports';
 const MAX_OPEN_FILES = 20;
@@ -63,6 +67,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
     // https://github.com/postcss/postcss/blob/master/docs/api.md#inputfile
     const sourcePath = tree.source.input.file;
     const trace = result.opts.trace || String.fromCharCode(0);
+    const translations = {};
 
     let depNr = 0;
     // https://github.com/postcss/postcss/blob/master/docs/api.md#containerwalkrulesselectorfilter-callback
@@ -78,6 +83,12 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
 
       pending.push(addToQueue(importsPath, runner, _trace)
         .then(anotherTree => {
+          const tokens = anotherTree.tokens || {};
+
+          rule.walkDecls(decl => {
+            translations[decl.prop] = tokens[decl.value];
+          });
+
           cache[importsPath] = anotherTree;
           return anotherTree;
         }));
@@ -87,6 +98,13 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
 
     return Promise.all(pending)
       .then(_ => {
+        tree.walkRules(exportRegexp, rule => {
+          rule.walkDecls(decl => {
+            Object.keys(translations)
+              .forEach(translation => decl.value = decl.value.replace(translation, translations[translation]));
+          });
+        });
+
         if (trace !== String.fromCharCode(0)) {
           return _;
         }
@@ -114,7 +132,7 @@ function retrievePluginsForParse(plugins) {
   }
 
   // clear exports
-  return pluginsForParse;
+  return pluginsForParse.concat(postcssExtractExports);
 }
 
 /**

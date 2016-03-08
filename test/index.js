@@ -4,7 +4,7 @@ const LocalByDefault = require('postcss-modules-local-by-default');
 const ExtractImports = require('postcss-modules-extract-imports');
 const Scope = require('postcss-modules-scope');
 const ResolveImports = require('../index.js');
-const RemoveExports = require('../removeExports');
+const ExtractExports = require('postcss-modules-extract-exports');
 
 const readFileSync = require('fs').readFileSync;
 const resolve = require('path').resolve;
@@ -18,11 +18,11 @@ suite('prove of concept', () => {
       ExtractImports,
       Scope,
       ResolveImports,
-      RemoveExports,
+      ExtractExports,
     ])
     .process(css, {from: resolve('test/cases/source.css')})
     .then(result => {
-      console.log(result.root);
+      console.log(result.root.tokens);
       console.log(result.css);
       done();
     })

@@ -24,7 +24,8 @@
   "dependencies": {
     "async": "^1.5.2",
     "lodash": "^4.6.1",
-    "postcss": "^5.0.17"
+    "postcss": "^5.0.17",
+    "postcss-modules-extract-exports": "github:sullenor/postcss-modules-extract-exports"
   },
   "devDependencies": {
     "mocha": "^2.4.5",
