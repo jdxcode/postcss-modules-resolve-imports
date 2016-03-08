@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "babel-register": "^6.6.5",
+    "in-publish": "^2.0.0",
     "mocha": "^2.4.5",
     "postcss-modules-extract-imports": "^1.0.0",
     "postcss-modules-local-by-default": "^1.0.1",
