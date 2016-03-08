@@ -28,7 +28,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
       }
 
       runner
-        .process(css, {from: filename, trace})
+        .process(css, {from: filename, _trace: trace})
         .then(result => cb(null, result.root))
         .catch(cb);
     });
@@ -66,7 +66,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
     const pending = [];
     // https://github.com/postcss/postcss/blob/master/docs/api.md#inputfile
     const sourcePath = tree.source.input.file;
-    const trace = result.opts.trace || String.fromCharCode(0);
+    const trace = result.opts._trace || String.fromCharCode(0);
     const translations = {};
 
     let depNr = 0;
