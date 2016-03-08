@@ -4,7 +4,10 @@
   "description": "Resolves ICSS imports",
   "main": "index.js",
   "scripts": {
+    "prepublish": "in-publish && npm run -s build || in-install",
+    "build": "babel index.js --out-file index.js",
     "test": "npm run test:node",
+    "test:babel": "$npm_package_scripts_test_unit --compilers js:babel-register",
     "test:node": "$npm_package_scripts_test_unit",
     "test:unit": "mocha --require test/setup.js --ui tdd test/index.js --harmony_destructuring --use_strict"
   },
@@ -13,7 +16,10 @@
     "url": "git+https://github.com/sullenor/postcss-modules-resolve-imports.git"
   },
   "keywords": [
-    "css-modules"
+    "css-modules",
+    "postcss",
+    "css",
+    "postcss-plugin"
   ],
   "author": "Alexey Litvinov",
   "license": "MIT",
@@ -24,10 +30,11 @@
   "dependencies": {
     "async": "^1.5.2",
     "lodash": "^4.6.1",
-    "postcss": "^5.0.17",
-    "postcss-modules-extract-exports": "github:sullenor/postcss-modules-extract-exports"
+    "postcss": "^5.0.19",
+    "postcss-modules-extract-exports": "^1.0.0"
   },
   "devDependencies": {
+    "babel-register": "^6.6.5",
     "mocha": "^2.4.5",
     "postcss-modules-extract-imports": "^1.0.0",
     "postcss-modules-local-by-default": "^1.0.1",
