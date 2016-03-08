@@ -1,0 +1,4 @@
+.app
+{
+  composes: chamois from 'awesome-theme/theme.css';
+}

@@ -4,6 +4,7 @@ const plugin = require('postcss').plugin;
 const postcss = require('postcss');
 const queue = require('async').queue;
 const readFile = require('fs').readFile;
+const reqResolve = require('resolve').sync;
 const resolve = require('path').resolve;
 const uniq = require('lodash').uniq;
 
@@ -140,8 +141,14 @@ function retrievePluginsForParse(plugins) {
  * @return {string}             absolute
  */
 function resolveImportsPath(importsPath, sourcePath) {
-  // @todo Support node_modules
-  return resolve(dirname(sourcePath), purifyPath(importsPath));
+  const imports = purifyPath(importsPath);
+  const start = imports.substring(0, 2);
+
+  if (start !== './' && start !== '..') {
+    return reqResolve(imports, {basedir: dirname(sourcePath)});
+  }
+
+  return resolve(dirname(sourcePath), imports);
 }
 
 /**
