@@ -8,6 +8,7 @@ const uniq = require('lodash').uniq;
 
 const importRegexp = /^:import\((.+)\)$/;
 const nameOfTheCurrentPlugin = 'postcss-modules-resolve-imports';
+const MAX_OPEN_FILES = 20;
 
 /**
  * @param  {object}  [opts]
@@ -27,7 +28,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
         .then(result => cb(null, result.root))
         .catch(cb);
     });
-  });
+  }, MAX_OPEN_FILES);
 
   /**
    * @param {string} filename
