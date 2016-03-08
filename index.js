@@ -21,14 +21,14 @@ const MAX_OPEN_FILES = 20;
  */
 module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveImports(opts) {
   // https://github.com/caolan/async#queueworker-concurrency
-  const q = queue(function worker({ filename, runner, trace }, cb) {
+  const q = queue(function worker({ filename, runner, trace, cache, traces }, cb) {
     readFile(filename, (er, css) => {
       if (er) {
         return void cb(er);
       }
 
       runner
-        .process(css, {from: filename, _trace: trace})
+        .process(css, {from: filename, _trace: trace, _cache: cache, _traces: traces})
         .then(result => cb(null, result.root))
         .catch(cb);
     });
@@ -39,9 +39,9 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
    * @param {object} runner
    * @param {string} trace
    */
-  function addToQueue(filename, runner, trace) {
+  function addToQueue(filename, runner, trace, cache, traces) {
     return new Promise((resolve, reject) => {
-      q.push({ filename, runner, trace }, (er, tree) => {
+      q.push({ filename, runner, trace, cache, traces }, (er, tree) => {
         if (er) {
           return void reject(er);
         }
@@ -50,9 +50,6 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
       });
     });
   }
-
-  const cache = {};
-  const traces = {};
 
   /**
    * @param  {object} tree   Root node
@@ -63,10 +60,12 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
     const plugins = retrievePluginsForParse(result.processor.plugins);
     const runner = postcss(plugins);
 
+    const cache = result.opts._cache || {};
     const pending = [];
     // https://github.com/postcss/postcss/blob/master/docs/api.md#inputfile
     const sourcePath = tree.source.input.file;
     const trace = result.opts._trace || String.fromCharCode(0);
+    const traces = result.opts._traces || {};
     const translations = {};
 
     let depNr = 0;
@@ -81,7 +80,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
         return cache[importsPath];
       }
 
-      pending.push(addToQueue(importsPath, runner, _trace)
+      pending.push(addToQueue(importsPath, runner, _trace, cache, traces)
         .then(anotherTree => {
           const tokens = anotherTree.tokens || {};
 
