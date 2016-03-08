@@ -1,31 +1,71 @@
+const basename = require('path').basename;
 const postcss = require('postcss');
+const readdirSync = require('fs').readdirSync;
+const readFileSync = require('fs').readFileSync;
+const relative = require('path').relative;
+const resolve = require('path').resolve;
 
 const LocalByDefault = require('postcss-modules-local-by-default');
 const ExtractImports = require('postcss-modules-extract-imports');
 const Scope = require('postcss-modules-scope');
-const ResolveImports = require('../index.js');
+const ResolveImports = require('../index');
 const ExtractExports = require('postcss-modules-extract-exports');
 
-const readFileSync = require('fs').readFileSync;
-const resolve = require('path').resolve;
+const runner = postcss([
+  LocalByDefault,
+  ExtractImports,
+  new Scope({generateScopedName: (local, filename) =>
+    Scope.generateScopedName(local, relative(process.cwd(), filename))}),
+  ResolveImports,
+  ExtractExports,
+]);
 
-const css = readFileSync(resolve('test/cases/source.css'), 'utf8');
+/**
+ * @param {string} testCase
+ */
+function describeTest(testCase) {
+  const source = readfile(testCase, 'source.css');
+  const expected = readfile(testCase, 'expected.css');
+  if (expected === null) {
+    return;
+  }
 
-suite('prove of concept', () => {
-  test('give me a hope', done => {
-    postcss([
-      LocalByDefault,
-      ExtractImports,
-      Scope,
-      ResolveImports,
-      ExtractExports,
-    ])
-    .process(css, {from: resolve('test/cases/source.css')})
-    .then(result => {
-      console.log(result.root.tokens);
-      console.log(result.css);
-      done();
-    })
-    .catch(done);
+  const expectedTokens = JSON.parse(readfile(testCase, 'expected.json'));
+
+  // @todo add a small shortcut to choose certain tests
+  test(basename(testCase), done => {
+    const root = runner
+      .process(source, {from: resolve(testCase, 'source.css')})
+      .then(result => {
+        assert.deepEqual(result.root.tokens, expectedTokens);
+        assert.equal(result.css, expected);
+        done();
+      })
+      .catch(done);
   });
+}
+
+/**
+ * @param  {string} dir
+ * @return {string[]}
+ */
+function readdir(dir) {
+  return readdirSync(resolve(__dirname, dir))
+    .map(nesteddir => resolve(__dirname, dir, nesteddir));
+}
+
+/**
+ * @param  {...string} file
+ * @return {string|null}
+ */
+function readfile(file) {
+  try {
+    return readFileSync(resolve.apply(null, arguments), 'utf8');
+  } catch(e) {
+    return null;
+  }
+}
+
+suite('postcss-modules-resolve-imports', () => {
+  readdir('./cases').forEach(describeTest);
 });
