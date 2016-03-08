@@ -1,0 +1,9 @@
+.header
+{
+  composes: header from './header.css';
+}
+
+.paragraph
+{
+  composes: paragraph from './paragraph.css';
+}

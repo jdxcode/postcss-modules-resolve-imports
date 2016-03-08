@@ -32,7 +32,7 @@ function describeTest(testCase) {
 
   const expectedTokens = JSON.parse(readfile(testCase, 'expected.json'));
 
-  // if (basename(testCase) !== 'single-import-export') {
+  // if (basename(testCase) !== 'nested-imports-should-be-first') {
   //   return;
   // }
 
@@ -41,8 +41,8 @@ function describeTest(testCase) {
     const root = runner
       .process(source, {from: resolve(testCase, 'source.css')})
       .then(result => {
-        assert.deepEqual(result.root.tokens, expectedTokens);
         assert.equal(result.css, expected);
+        assert.deepEqual(result.root.tokens, expectedTokens);
         done();
       })
       .catch(done);

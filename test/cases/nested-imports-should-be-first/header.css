@@ -1,0 +1,7 @@
+.header
+{
+  text-decoration: underline;
+
+  composes: paragraph from './paragraph.css';
+  composes: oceanic from './theme.css';
+}

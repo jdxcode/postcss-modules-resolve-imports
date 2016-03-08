@@ -1,0 +1,37 @@
+._test_cases_nested_imports_should_be_first_header__header
+{
+
+    text-decoration: underline
+}
+
+._test_cases_nested_imports_should_be_first_theme__chamois
+{
+
+    color: #e8cd9d
+}
+
+._test_cases_nested_imports_should_be_first_theme__oceanic
+{
+
+    color: #69c
+}
+
+._test_cases_nested_imports_should_be_first_typography__roboto
+{
+
+    font: normal 500 14px 'Roboto', sans-serif
+}
+
+._test_cases_nested_imports_should_be_first_paragraph__paragraph
+{
+
+    text-decoration: none
+}
+
+._test_cases_nested_imports_should_be_first_source__header
+{
+}
+
+._test_cases_nested_imports_should_be_first_source__paragraph
+{
+}
