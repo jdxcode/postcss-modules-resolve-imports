@@ -1,9 +1,6 @@
-.header
+.a
 {
-  composes: header from './header.css';
-}
+  color: grey;
 
-.paragraph
-{
-  composes: paragraph from './paragraph.css';
+  composes: a from './third.css';
 }

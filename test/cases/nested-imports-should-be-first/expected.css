@@ -1,37 +1,24 @@
-._test_cases_nested_imports_should_be_first_theme__chamois
+._test_cases_nested_imports_should_be_first_first__a
 {
-
-    color: #e8cd9d
+  text-decoration: line-through;
 }
-
-._test_cases_nested_imports_should_be_first_theme__oceanic
+._test_cases_nested_imports_should_be_first_first__b
 {
-
-    color: #69c
+  text-decoration: underline;
 }
-
-._test_cases_nested_imports_should_be_first_typography__roboto
+._test_cases_nested_imports_should_be_first_second__a
 {
-
-    font: normal 500 14px 'Roboto', sans-serif
+  text-decoration: overline;
 }
-
-._test_cases_nested_imports_should_be_first_paragraph__paragraph
+._test_cases_nested_imports_should_be_first_third__a
 {
-
-    text-decoration: none
+  color: green;
 }
-
-._test_cases_nested_imports_should_be_first_header__header
+._test_cases_nested_imports_should_be_first_third__b
 {
-
-    text-decoration: underline
+  color: white;
 }
-
-._test_cases_nested_imports_should_be_first_source__header
+._test_cases_nested_imports_should_be_first_source__a
 {
-}
-
-._test_cases_nested_imports_should_be_first_source__paragraph
-{
+  color: grey;
 }

@@ -1,0 +1,13 @@
+.a
+{
+  color: green;
+
+  composes: a from './second.css';
+}
+
+.b
+{
+  color: white;
+
+  composes: a from './first.css';;
+}
