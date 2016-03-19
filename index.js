@@ -52,15 +52,12 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
     tree.walkRules(importRegexp, rule => {
       const trace = _trace + String.fromCharCode(depNr++);
       const importsPath = resolveImportsPath(RegExp.$1, sourcePath);
-      appendTo(pending, pushToQ({file: importsPath, runner, cache, trace, traces}))
+      pending.push(pushToQ({file: importsPath, runner, cache, trace, traces})
         .then(rs => {
           const tokens = rs.tokens || {};
-          rule.walkDelcs(decl =>
+          rule.walkDecls(decl =>
             translations[decl.prop] = tokens[decl.value]);
-        })
-        .catch(er => {
-          throw er;
-        });
+        }));
 
       traces[trace] = importsPath;
       tree.removeChild(rule);
