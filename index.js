@@ -2,6 +2,7 @@ const plugin = require('postcss').plugin;
 const postcss = require('postcss');
 const promisify = require('promisify-api');
 const queue = require('async').queue;
+const readFile = require('fs').readFile;
 const requireResolve = require('resolve').sync;
 
 const maxOpenFiles = 5;
@@ -30,14 +31,28 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
     const plugins = retrievePluginsForParse(result.processor.plugins);
     const runner = postcss(plugins);
 
+    const _trace = result.opts._trace || String.fromCharCode(0);
     const cache = result.opts._cache || {};
-    const trace = result.opts._trace || String.fromCharCode(0);
+    const translations = {};
+
+    const pending = [];
+    var depNr = 0;
 
     // https://github.com/postcss/postcss/blob/master/docs/api.md#containerwalkrulesselectorfilter-callback
     tree.walkRules(importRegexp, rule => {
+      const trance = _trace + String.fromCharCode(depNr++);
       const importsPath = resolveImportsPath(RegExp.$1, sourcePath);
-      // checkCache -> readFile -> processFile -> Root
+      appendTo(pending, pushToQ({file: importsPath, runner, cache, trace}))
+        .then(rs => {
+          const tokens = rs.tokens || {};
+          rule.walkDelcs(decl =>
+            translations[decl.prop] = tokens[decl.value]);
+        });
+
+      tree.removeChild(rule);
     });
+
+    return Promise.all(pending)
   };
 });
 
@@ -48,7 +63,25 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
  * @param {object}   task
  * @param {function} cb
  */
-function worker(task, cb) {}
+function worker({ file, runner, cache, trace }, cb) {
+  if (cache[file]) {
+    return void cb(null, cache[file]);
+  }
+
+  readFile(file, 'utf8', (er, css) => {
+    if (er) {
+      return void cb(er);
+    }
+
+    runner
+      .process(css, {from: file, _cache: cache})
+      .then(rs => {
+        cache[file] = rs.root;
+        cb(null, rs.root);
+      })
+      .catch(cb);
+  });
+}
 
 /**
  * @param  {array} plugins
@@ -88,6 +121,16 @@ function resolveImportsPath(importsPath, sourcePath) {
  */
 function purifyPath(importsPath) {
   return importsPath.replace(/^["']|["']$/g, '');
+}
+
+/**
+ * @param  {array}   queue
+ * @param  {promise} promise
+ * @return {promise}
+ */
+function appendTo(queue, promise) {
+  queue.push(promise);
+  return promise;
 }
 
 /**
