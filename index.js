@@ -1,12 +1,18 @@
+const dirname = require('path').dirname;
+const forEach = require('lodash').forEach;
+const keys = require('lodash').keys;
 const plugin = require('postcss').plugin;
 const postcss = require('postcss');
 const promisify = require('promisify-api');
 const queue = require('async').queue;
 const readFile = require('fs').readFile;
 const requireResolve = require('resolve').sync;
+const resolve = require('path').resolve;
+const uniq = require('lodash').uniq;
 
 const maxOpenFiles = 5;
 const nameOfTheCurrentPlugin = 'postcss-modules-resolve-imports';
+const postcssExtractExports = require('postcss-modules-extract-exports');
 
 const exportRegexp = /^:export$/;
 const importRegexp = /^:import\((.+)\)$/;
@@ -14,7 +20,8 @@ const importRegexp = /^:import\((.+)\)$/;
 /**
  * @param  {object}  [opts]
  * @param  {object}  [opts._cache]
- * @param  {object}  [opts._trace]
+ * @param  {string}  [opts._trace]
+ * @param  {object}  [opts._traces]
  * @return {function}
  */
 module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveImports(opts) {
@@ -30,9 +37,12 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
   return function resolveImports(tree, result) {
     const plugins = retrievePluginsForParse(result.processor.plugins);
     const runner = postcss(plugins);
+    // https://github.com/postcss/postcss/blob/master/docs/api.md#inputfile
+    const sourcePath = tree.source.input.file;
 
     const _trace = result.opts._trace || String.fromCharCode(0);
     const cache = result.opts._cache || {};
+    const traces = result.opts._traces || {};
     const translations = {};
 
     const pending = [];
@@ -40,19 +50,40 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
 
     // https://github.com/postcss/postcss/blob/master/docs/api.md#containerwalkrulesselectorfilter-callback
     tree.walkRules(importRegexp, rule => {
-      const trance = _trace + String.fromCharCode(depNr++);
+      const trace = _trace + String.fromCharCode(depNr++);
       const importsPath = resolveImportsPath(RegExp.$1, sourcePath);
-      appendTo(pending, pushToQ({file: importsPath, runner, cache, trace}))
+      appendTo(pending, pushToQ({file: importsPath, runner, cache, trace, traces}))
         .then(rs => {
           const tokens = rs.tokens || {};
           rule.walkDelcs(decl =>
             translations[decl.prop] = tokens[decl.value]);
+        })
+        .catch(er => {
+          throw er;
         });
 
+      traces[trace] = importsPath;
       tree.removeChild(rule);
     });
 
     return Promise.all(pending)
+      .then(() => {
+        tree.walkRules(exportRegexp, rule => {
+          rule.walkDecls(decl => {
+            forEach(translations, (translation, key) =>
+              decl.value = decl.value.replace(key, translation));
+          });
+        });
+      })
+      .then(() => {
+        if (_trace !== String.fromCharCode(0)) {
+          return;
+        }
+
+        const files = uniq(keys(traces).sort(traceKeySorter).map(key => traces[key])).reverse();
+        return Promise.all(files.map(file => cache[file]))
+          .then(files => files.forEach(file => tree.prepend(file.nodes)));
+      })
   };
 });
 
@@ -63,7 +94,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function postcssModulesResolveIm
  * @param {object}   task
  * @param {function} cb
  */
-function worker({ file, runner, cache, trace }, cb) {
+function worker({ file, runner, cache, trace, traces }, cb) {
   if (cache[file]) {
     return void cb(null, cache[file]);
   }
@@ -74,7 +105,7 @@ function worker({ file, runner, cache, trace }, cb) {
     }
 
     runner
-      .process(css, {from: file, _cache: cache})
+      .process(css, {from: file, _cache: cache, _trace: trace, _traces: traces})
       .then(rs => {
         cache[file] = rs.root;
         cb(null, rs.root);
