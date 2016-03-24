@@ -32,7 +32,7 @@
     "lodash": "^4.6.1",
     "postcss": "^5.0.19",
     "postcss-modules-extract-exports": "^1.0.0",
-    "promisify-api": "^1.0.0",
+    "promisify-api": "^1.1.0",
     "resolve": "^1.1.7"
   },
   "devDependencies": {
