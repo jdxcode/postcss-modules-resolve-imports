@@ -9,6 +9,11 @@ const walkImports = require('./lib/walkImports');
 
 const postcssExtractExports = require('postcss-modules-extract-exports');
 const postcssResolveDeps = plugin('resolve-dependency-imports', function () {
+  /**
+   * @param  {container} tree
+   * @param  {object}    result
+   * @return {promise}
+   */
   return function resolveDependencyImports(tree, result) {
     // https://github.com/postcss/postcss/blob/master/docs/api.md#inputfile
     const originalPath = tree.source.input.file;
@@ -19,9 +24,11 @@ const postcssResolveDeps = plugin('resolve-dependency-imports', function () {
 
     walkImports(tree, originalPath, (filepath, i, rule) => {
       const _trace = trace + String.fromCharCode(i);
+
       pending.push(processFile(filepath, _trace)
       .then(result => {
         const tokens = result.tokens || {};
+
         rule.walkDecls(decl =>
           translations[decl.prop] = tokens[decl.value]);
       }));
@@ -48,6 +55,11 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
   const q = queue(readFile, maxOpenFiles);
   const queueFile = promisify(q.push, q);
 
+  /**
+   * @param  {container} tree
+   * @param  {object}    result
+   * @return {promise}
+   */
   return function resolveImports(tree, result) {
     const plugins = retrievePluginsForParse(result.processor.plugins);
     const processFile = fileProcessor(queueFile, plugins);
@@ -60,9 +72,11 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
 
     walkImports(tree, originalPath, (filepath, i, rule) => {
       const _trace = trace + String.fromCharCode(i);
+
       pending.push(processFile(filepath, _trace)
       .then(result => {
         const tokens = result.tokens || {};
+
         rule.walkDecls(decl =>
           translations[decl.prop] = tokens[decl.value]);
       }));
@@ -73,6 +87,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
     .then(() => resolveDeps(processFile.traces))
     .then(files => {
       const cache = processFile.cache;
+
       return Promise.all(files.map(file => cache[file]))
       .then(containers => containers.forEach(container =>
         tree.prepend(container.nodes)));
@@ -81,8 +96,8 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
 });
 
 /**
- * @param  {array} plugins
- * @return {array}
+ * @param  {plugin[]} plugins
+ * @return {plugin[]}
  */
 function retrievePluginsForParse(plugins) {
   const pluginsForParse = plugins.slice();
