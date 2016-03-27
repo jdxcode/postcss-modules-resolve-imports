@@ -32,11 +32,19 @@ const postcssResolveDeps = plugin('resolve-dependency-imports', function () {
   };
 });
 
-const maxOpenFiles = 5;
+const MAX_OPEN_FILES = 50;
 const nameOfTheCurrentPlugin = 'postcss-modules-resolve-imports';
 
-
+/**
+ * @param  {object} opts
+ * @param  {number} opts.maxOpenFiles
+ * @return {function}
+ */
 module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
+  const maxOpenFiles = opts && typeof opts.maxOpenFiles === 'number'
+    ? opts.maxOpenFiles
+    : MAX_OPEN_FILES;
+
   const q = queue(readFile, maxOpenFiles);
   const queueFile = promisify(q.push, q);
 
