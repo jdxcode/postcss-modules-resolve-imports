@@ -1,3 +1,4 @@
+const assign = require('lodash').assign;
 const dirname = require('path').dirname;
 const find = require('lodash').find;
 const forEach = require('lodash').forEach;
@@ -26,8 +27,8 @@ generate((name, files) => {
       const css = readFile(sourcePath, 'utf8');
       const opts = optsPath ? require(optsPath) : {};
 
-      runner(opts)
-      .process(css, {from: sourcePath})
+      runner()
+      .process(css, assign({from: sourcePath}, opts))
       .then(result => {
         resultingCSS = result.css;
         resultingTokens = result.root.tokens;
@@ -38,7 +39,7 @@ generate((name, files) => {
 
     test('resulting css should be equal expected', () => {
       const css = readFile(expectedCSSPath, 'utf8');
-      assert.equal(resultingCSS, css);
+      assert.equal(resultingCSS.trim(), css.trim());
     });
 
     test('result tokens should be equal expected', () => {

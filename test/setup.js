@@ -8,15 +8,13 @@ const ResolveImports = require('../index');
 const ExtractExports = require('postcss-modules-extract-exports');
 
 global.assert = require('assert');
-global.runner = function (opts) {
+global.runner = function () {
   return postcss([
     LocalByDefault,
     ExtractImports,
     new Scope({generateScopedName: (local, filename) =>
       Scope.generateScopedName(local, relative(process.cwd(), filename))}),
-    opts
-      ? new ResolveImports(opts)
-      : ResolveImports,
+    ResolveImports,
     ExtractExports,
   ]);
 };
