@@ -1,75 +1,77 @@
-const basename = require('path').basename;
-const postcss = require('postcss');
-const readdirSync = require('fs').readdirSync;
-const readFileSync = require('fs').readFileSync;
-const relative = require('path').relative;
+const assign = require('lodash').assign;
+const dirname = require('path').dirname;
+const find = require('lodash').find;
+const forEach = require('lodash').forEach;
+const glob = require('glob').sync;
+const groupBy = require('lodash').groupBy;
+const readFile = require('fs').readFileSync;
 const resolve = require('path').resolve;
 
-const LocalByDefault = require('postcss-modules-local-by-default');
-const ExtractImports = require('postcss-modules-extract-imports');
-const Scope = require('postcss-modules-scope');
-const ResolveImports = require('../index');
-const ExtractExports = require('postcss-modules-extract-exports');
-
-const runner = postcss([
-  LocalByDefault,
-  ExtractImports,
-  new Scope({generateScopedName: (local, filename) =>
-    Scope.generateScopedName(local, relative(process.cwd(), filename))}),
-  ResolveImports,
-  ExtractExports,
-]);
-
 /**
- * @param {string} testCase
+ * specify particular test cases using the glob pattern,
+ * for example: 'multiple*'
  */
-function describeTest(testCase) {
-  const source = readfile(testCase, 'source.css');
-  const expected = readfile(testCase, 'expected.css');
-  if (expected === null) {
-    return;
-  }
+const ONLY = '';
 
-  const expectedTokens = JSON.parse(readfile(testCase, 'expected.json'));
+generate((name, files) => {
+  const optsPath = find(files, file => /source\.json$/.test(file));
+  const sourcePath = find(files, file => /source\.css$/.test(file));
+  const expectedCSSPath = find(files, file => /expected\.css$/.test(file));
+  const expectedTokensPath = find(files, file => /expected\.json$/.test(file));
 
-  // if (basename(testCase) !== 'nested-imports-should-be-first') {
-  //   return;
-  // }
+  suite(name, () => {
+    var resultingCSS;
+    var resultingTokens;
 
-  // @todo add a small shortcut to choose certain tests
-  test(basename(testCase), done => {
-    const root = runner
-      .process(source, {from: resolve(testCase, 'source.css')})
+    before(done => {
+      const css = readFile(sourcePath, 'utf8');
+      const opts = optsPath ? require(optsPath) : {};
+
+      runner()
+      .process(css, assign({from: sourcePath}, opts))
       .then(result => {
-        assert.equal(result.css, expected);
-        assert.deepEqual(result.root.tokens, expectedTokens);
+        resultingCSS = result.css;
+        resultingTokens = result.root.tokens;
         done();
       })
       .catch(done);
+    });
+
+    test('resulting css should be equal expected', () => {
+      const css = readFile(expectedCSSPath, 'utf8');
+      assert.equal(resultingCSS.trim(), css.trim());
+    });
+
+    test('result tokens should be equal expected', () => {
+      const tokens = require(expectedTokensPath);
+      assert.deepEqual(resultingTokens, tokens);
+    });
+  });
+});
+
+/**
+ * @param {function} generator
+ */
+function generate(generator) {
+  const basepath = resolve(__dirname, 'cases');
+
+  suite('postcss-modules-resolve-imports', () => {
+    forEach(getTestCases(ONLY), (files, name) =>
+      generator(name, files.map(file => resolve(basepath, file))));
   });
 }
 
 /**
- * @param  {string} dir
- * @return {string[]}
+ * @param  {string} [particular]
+ * @return {object}
  */
-function readdir(dir) {
-  return readdirSync(resolve(__dirname, dir))
-    .map(nesteddir => resolve(__dirname, dir, nesteddir));
-}
+function getTestCases(particular) {
+  const basepath = resolve(__dirname, 'cases');
+  const scope = particular && typeof particular === 'string'
+    ? particular
+    : '*';
 
-/**
- * @param  {...string} file
- * @return {string|null}
- */
-function readfile(file) {
-  try {
-    return readFileSync(resolve.apply(null, arguments), 'utf8');
-  } catch(e) {
-    return null;
-  }
-}
+  const files = glob(`${scope}/{expected.*,source*.*}`, {cwd: basepath});
 
-suite('postcss-modules-resolve-imports', () => {
-  readdir('./cases').forEach(describeTest);
-});
+  return groupBy(files, dirname);
+}

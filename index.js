@@ -1,4 +1,5 @@
 const fileProcessor = require('./lib/fileProcessor');
+const omit = require('lodash').omit;
 const plugin = require('postcss').plugin;
 const queue = require('async').queue;
 const promisify = require('promisify-api');
@@ -62,7 +63,8 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
    */
   return function resolveImports(tree, result) {
     const plugins = retrievePluginsForParse(result.processor.plugins);
-    const processFile = fileProcessor(queueFile, plugins);
+    const processOpts = omit(result.opts, 'from');
+    const processFile = fileProcessor(queueFile, plugins, processOpts);
 
     // https://github.com/postcss/postcss/blob/master/docs/api.md#inputfile
     const originalPath = tree.source.input.file;
