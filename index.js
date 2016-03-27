@@ -27,7 +27,7 @@ const postcssResolveDeps = plugin('resolve-dependency-imports', function () {
       }));
     });
 
-    Promise.all(pending)
+    return Promise.all(pending)
     .then(() => updateExports(tree, translations));
   };
 });
@@ -60,7 +60,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
       }));
     });
 
-    Promise.all(pending)
+    return Promise.all(pending)
     .then(() => updateExports(tree, translations))
     .then(() => resolveDeps(processFile.traces))
     .then(files => {
