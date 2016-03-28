@@ -4,6 +4,7 @@ const plugin = require('postcss').plugin;
 const queue = require('async').queue;
 const promisify = require('promisify-api');
 const readFile = require('fs').readFile;
+const replaceSymbols = require('icss-replace-symbols').default;
 const resolveDeps = require('./lib/resolveDeps');
 const updateExports = require('./lib/updateExports');
 const walkImports = require('./lib/walkImports');
@@ -36,6 +37,7 @@ const postcssResolveDeps = plugin('resolve-dependency-imports', function () {
     });
 
     return Promise.all(pending)
+    .then(() => replaceSymbols(tree, translations))
     .then(() => updateExports(tree, translations));
   };
 });
@@ -85,6 +87,7 @@ module.exports = plugin(nameOfTheCurrentPlugin, function (opts) {
     });
 
     return Promise.all(pending)
+    .then(() => replaceSymbols(tree, translations))
     .then(() => updateExports(tree, translations))
     .then(() => resolveDeps(processFile.traces))
     .then(files => {

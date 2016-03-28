@@ -29,9 +29,11 @@
   "homepage": "https://github.com/sullenor/postcss-modules-resolve-imports#readme",
   "dependencies": {
     "async": "^1.5.2",
+    "icss-replace-symbols": "^1.0.2",
     "lodash": "^4.6.1",
     "postcss": "^5.0.19",
     "postcss-modules-extract-exports": "^1.0.0",
+    "postcss-modules-values": "^1.1.2",
     "promisify-api": "^1.1.0",
     "resolve": "^1.1.7"
   },
