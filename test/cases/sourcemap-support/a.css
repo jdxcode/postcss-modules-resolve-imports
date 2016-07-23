@@ -1,6 +1,0 @@
-.a
-{
-  color: #aaa;
-
-  composes: b from './b.css';
-}

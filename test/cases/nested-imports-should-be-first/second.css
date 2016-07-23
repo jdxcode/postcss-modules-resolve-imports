@@ -1,6 +1,0 @@
-.a
-{
-  text-decoration: overline;
-
-  composes: b from './first.css';
-}

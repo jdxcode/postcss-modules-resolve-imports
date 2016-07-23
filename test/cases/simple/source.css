@@ -1,5 +1,2 @@
 .app
-{
-  composes: chamois from './theme.css';
-  composes: roboto from './typography.css';
-}
+{}

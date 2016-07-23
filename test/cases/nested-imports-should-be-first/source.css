@@ -1,6 +1,0 @@
-.a
-{
-  color: grey;
-
-  composes: a from './third.css';
-}

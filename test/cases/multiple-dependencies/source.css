@@ -1,8 +1,0 @@
-.a
-{
-  color: #aaa;
-
-  composes: b1 b2 from './b.css';
-  composes: c from './c.css';
-  composes: something-global from global;
-}

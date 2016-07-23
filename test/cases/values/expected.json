@@ -1,9 +1,0 @@
-{
-  "blue": "#f01",
-  "borders": "'./borders.css'",
-  "breakpoints": "'./breakpoints.css'",
-  "foo": "_test_cases_values_source__foo _test_cases_values_borders__dashed _test_cases_values_colors__text-secondary",
-  "medium": "(min-width: 600px) and (max-width: 959px)",
-  "secondary": "#2f2",
-  "small": "(max-width: 599px)"
-}
