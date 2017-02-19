@@ -4,29 +4,29 @@
   "description": "Resolves ICSS imports",
   "main": "index.js",
   "scripts": {
-    "test": "node test/case"
+    "test": "tape test/**/*.test.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sullenor/postcss-modules-resolve-imports.git"
   },
-  "keywords": [
-    "css",
-    "css-modules",
-    "postcss",
-    "postcss-plugin"
-  ],
+  "keywords": [],
   "author": "Alexey Litvinov",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sullenor/postcss-modules-resolve-imports/issues"
   },
   "homepage": "https://github.com/sullenor/postcss-modules-resolve-imports#readme",
-  "dependencies": {},
+  "eslintConfig": {
+    "extends": "@sullenor/eslint-config/node"
+  },
+  "peerDependencies": {
+    "postcss": ">= 5"
+  },
   "devDependencies": {
-    "lodash": "^4.13.1",
-    "postcss": "^5.1.0",
-    "promisify-api": "^1.1.1",
-    "tape": "^4.6.0"
+    "@sullenor/eslint-config": "^1.0.9",
+    "eslint": "^3.15.0",
+    "postcss": "^5.2.14",
+    "tape": "^4.6.3"
   }
 }
