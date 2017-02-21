@@ -24,7 +24,7 @@
     "postcss": ">= 5"
   },
   "devDependencies": {
-    "@sullenor/eslint-config": "^1.0.9",
+    "@sullenor/eslint-config": "^1.0.10",
     "eslint": "^3.15.0",
     "postcss": "^5.2.14",
     "tape": "^4.6.3"
