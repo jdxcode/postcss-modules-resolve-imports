@@ -9,6 +9,9 @@ function resolveImportsPlugin({resolve}) {
   return resolveImports;
 
   function resolveImports(root, result) {
-    // walk imports, memorise files and tokens
+    // walk imports, memorise the files, build graph, remove imports
+    // resolve dependency order
+    // [resolve tokens, merge trees]
+    // provide exports
   }
 }
