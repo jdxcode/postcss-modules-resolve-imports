@@ -1,0 +1,5 @@
+.blue
+{
+  composes: green from './bg.css';
+  color: blue;
+}

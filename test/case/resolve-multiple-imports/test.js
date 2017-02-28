@@ -12,6 +12,9 @@ test('resolve-imports', t => {
   )(__dirname);
 
   t.equal(resulting.trim(), expected.trim());
-  t.deepEqual(tokens, {body: '_source_body _a_yellow'});
+  t.deepEqual(tokens, {
+    app: '_source_app',
+    body: '_source_body _a_yellow _b_blue _bg_green',
+  });
   t.end();
 });

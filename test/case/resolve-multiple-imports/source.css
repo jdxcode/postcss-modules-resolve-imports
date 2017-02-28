@@ -1,0 +1,10 @@
+.app
+{
+  /**/
+}
+
+.body
+{
+  composes: yellow from './a.css';
+  composes: blue from './b.css';
+}

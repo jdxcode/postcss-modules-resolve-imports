@@ -26,9 +26,14 @@ function setup(...plugins) {
 
     const source = readFileSync(sourcepath, 'utf8');
     const expected = readFileSync(expectedpath, 'utf8');
-    const resulting = runner.process(source, {from: sourcepath}).css;
+    const lazyResult = runner.process(source, {from: sourcepath});
 
-    return {expected, resulting, source};
+    return {
+      exports: lazyResult.root.exports,
+      expected,
+      resulting: lazyResult.css,
+      source,
+    };
   }
 }
 

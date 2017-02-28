@@ -21,6 +21,33 @@ into:
 ```
 
 
+postcss-modules-scope
+
+
+:import("./file.css") {
+  imported_otherClass: otherClass;
+}
+:local(.exportName) {
+  composes: imported_otherClass;
+  color: green;
+}
+
+
+to
+
+
+:import("./file.css") {
+  imported_otherClass: otherClass;
+}
+._lib_extender__exportName {
+  color: green;
+}
+:export {
+  exportName: _lib_extender__exportName imported_otherClass;
+}
+
+
+
 ## Options
 
 `resolve` `object`
@@ -49,3 +76,4 @@ into:
 - Interoperable CSS: https://github.com/css-modules/icss
 - https://en.wikipedia.org/wiki/Topological_sorting
 - https://nodejs.org/dist/latest-v6.x/docs/api/modules.html#modules_all_together
+- http://api.postcss.org/AtRule.html#walkRules
