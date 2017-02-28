@@ -1,0 +1,11 @@
+:import("./a.css")
+{
+  i__imported_yellow_0: yellow
+}
+._source_body
+{
+}
+:export
+{
+  body: _source_body i__imported_yellow_0
+}

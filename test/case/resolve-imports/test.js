@@ -1,10 +1,14 @@
 'use strict';
 
-const setupCase = require('../../setupCase');
+const setup = require('../../setup');
 const test = require('tape');
 
 test('resolve-imports', t => {
-  const {expected, resulting} = setupCase()(__dirname);
+  const {expected, resulting} = setup(
+    'local-by-default',
+    'extract-imports',
+    'scope'
+  )(__dirname);
 
   t.equal(resulting, expected);
   t.end();
