@@ -46,7 +46,7 @@ function resolveImportsPlugin({resolve} = {}) {
         const dependencyPath = extractFilepath(rule.selector);
         const absDependencyPath = resolveModule(dependencyPath, {cwd: dirname(rootPath), resolve});
 
-        if (!absDependencyPath) throw new Error('Can not resolve ' + dependencyPath);
+        if (!absDependencyPath) throw new Error('Can not resolve ' + dependencyPath + ' from ' + dirname(rootPath));
 
         // Смотрим цвет -> черный, то оставляем, серый -> цикл
         if (
@@ -54,12 +54,14 @@ function resolveImportsPlugin({resolve} = {}) {
           nodes[absDependencyPath].mark === TEMPORARY_MARK || // цикл
           nodes[absDependencyPath] &&
           nodes[absDependencyPath].mark === PERMANENT_MARK // достаем сразу экспорты и идем дальше
-        ) return void updateGenerics(localGenerics, nodes[absDependencyPath].exports);
+        ) {
+          updateGenerics(localGenerics, nodes[absDependencyPath].exports);
+        } else {
+          const css = readFileSync(absDependencyPath, 'utf8');
+          const dependencyResult = processor.process(css, {from: absDependencyPath, nodes, rootPath, rootTree});
 
-        const css = readFileSync(absDependencyPath, 'utf8');
-        const dependencyResult = processor.process(css, {from: absDependencyPath, nodes, rootPath, rootTree});
-
-        updateGenerics(localGenerics, dependencyResult.root.exports);
+          updateGenerics(localGenerics, dependencyResult.root.exports);
+        }
       } else {
         rule.walkDecls(decl => localExports[decl.prop] = decl.value);
       }
