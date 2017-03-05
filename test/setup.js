@@ -1,21 +1,21 @@
 'use strict';
 
 const {readFileSync} = require('fs');
-const {basename, relative, resolve} = require('path');
+const {basename, resolve} = require('path');
 const postcss = require('postcss');
 
-const CASEDIR = resolve(__dirname, 'case');
 const LOADER = {
   'local-by-default': () => require('postcss-modules-local-by-default'),
   'extract-imports': () => require('postcss-modules-extract-imports'),
-  'scope': () => new require('postcss-modules-scope')({generateScopedName}),
-  'self': () => require('../index.js'),
+  scope: () => new require('postcss-modules-scope')({generateScopedName}),
+  self: () => require('../index.js'),
 };
 
 module.exports = setup;
 
 function setup(...plugins) {
-  const loadedPlugins = plugins.map(name => LOADER[name]());
+  const loadedPlugins = plugins.map(name =>
+    typeof name === 'string' ? LOADER[name]() : name);
 
   return setupCase;
 
@@ -38,7 +38,5 @@ function setup(...plugins) {
 }
 
 function generateScopedName(local, filename) {
-  return `_${basename(filename).split('.').shift()}_${local}`
-
-  return '_' + relative(CASEDIR, filename).replace(/[\\\/]/g, '_').split('.').shift();
+  return `_${basename(filename).split('.').shift()}_${local}`;
 }
