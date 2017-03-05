@@ -12,9 +12,9 @@ test('opts-alias', t => {
     'scope',
     resolveImports({
       resolve: {
-        // alias: {
-        //   button: resolve(__dirname, 'lib/button/button.css'),
-        // },
+        alias: {
+          button: resolve(__dirname, 'lib/button/button.css'),
+        },
       },
     })
   )(__dirname);
