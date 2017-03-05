@@ -47,6 +47,13 @@ to
 }
 
 
+the common parts
+
+depsExtractor:
+
+-> ast, result (opts, processor)
+<- ast.exports
+
 
 ## Options
 
