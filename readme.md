@@ -1,15 +1,14 @@
 postcss-modules-resolve-imports
 ===============================
 
+
 Transforms:
 
 ```css
 :import("library/button.css") {
-  button: __tmp_487387465fczSDGHSABb;
+  i__imported_button_0: button;
 }
-
-:local(.continueButton) {
-  composes: __tmp_487387465fczSDGHSABb;
+._source_continueButton {
   color: green;
 }
 ```
@@ -17,42 +16,13 @@ Transforms:
 into:
 
 ```css
-???
+._button_button {
+  /*common button styles*/
+}
+._source_continueButton {
+  color: green
+}
 ```
-
-
-postcss-modules-scope
-
-
-:import("./file.css") {
-  imported_otherClass: otherClass;
-}
-:local(.exportName) {
-  composes: imported_otherClass;
-  color: green;
-}
-
-
-to
-
-
-:import("./file.css") {
-  imported_otherClass: otherClass;
-}
-._lib_extender__exportName {
-  color: green;
-}
-:export {
-  exportName: _lib_extender__exportName imported_otherClass;
-}
-
-
-the common parts
-
-depsExtractor:
-
--> ast, result (opts, processor)
-<- ast.exports
 
 
 ## Options
