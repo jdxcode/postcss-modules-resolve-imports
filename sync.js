@@ -18,10 +18,12 @@ module.exports = plugin('postcss-modules-resolve-imports', resolveImportsPlugin)
 
 /**
  * dangerouslyPrevailCyclicDepsWarnings
+ * explicitExports
  * resolve.alias
  * resolve.extensions
+ * resolve.modules
  */
-function resolveImportsPlugin({resolve = {}} = {}) {
+function resolveImportsPlugin({explicitExports, resolve = {}} = {}) {
   return resolveImports;
 
   function resolveImports(ast, result) {
@@ -31,6 +33,19 @@ function resolveImportsPlugin({resolve = {}} = {}) {
     const rootTree = postcss.root();
 
     resolveDeps(ast, {opts: {from: rootPath, graph, resolve, rootPath, rootTree}, processor});
+
+    if (explicitExports) {
+      const exportRule = postcss.rule({selector: ':export'});
+
+      for (const className in ast.exports)
+        exportRule.append({
+          prop: className,
+          value: ast.exports[className],
+          raws: {before: '\n  '},
+        });
+
+      rootTree.prepend(exportRule);
+    }
 
     rootTree.exports = ast.exports;
     result.root = rootTree;

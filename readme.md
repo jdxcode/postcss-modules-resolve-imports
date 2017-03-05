@@ -27,6 +27,8 @@ into:
 
 ## Options
 
+`explicitExports` `boolean`
+
 `resolve` `object`
 
 `resolve.alias` `object`
