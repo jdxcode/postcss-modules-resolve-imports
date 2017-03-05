@@ -1,0 +1,5 @@
+.body
+{
+  composes: aaa from 'nnn.css';
+  composes: bbb from './aaa/aaa.css';
+}

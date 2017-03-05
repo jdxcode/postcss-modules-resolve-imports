@@ -1,0 +1,5 @@
+.continueButton
+{
+  composes: button from 'library/button.css';
+  color: green;
+}

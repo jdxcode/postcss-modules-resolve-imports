@@ -1,5 +1,5 @@
-# Logs
-npm-debug.log*
-
-# Dependency directory
+.DS_Store
+.npm
 node_modules
+npm-debug.log*
+yarn.lock

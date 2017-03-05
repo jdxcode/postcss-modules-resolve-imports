@@ -1,0 +1,10 @@
+.aaa
+{
+  background: red;
+}
+
+.bbb
+{
+  composes: bbb from 'nnn.css';
+  background: yellow;
+}
