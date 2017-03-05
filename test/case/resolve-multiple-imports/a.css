@@ -1,4 +1,9 @@
-.yellow
+.aa
 {
-  color: yellow;
+  composes: aa from './c.css';
+}
+
+.bb
+{
+  composes: bb from './c.css';
 }

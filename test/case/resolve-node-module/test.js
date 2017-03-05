@@ -3,7 +3,7 @@
 const setup = require('../../setup');
 const test = require('tape');
 
-test('resolve-multiple-imports', t => {
+test('resolve-node-module', t => {
   const {expected, resulting, exports: tokens} = setup(
     'local-by-default',
     'extract-imports',
@@ -12,9 +12,6 @@ test('resolve-multiple-imports', t => {
   )(__dirname);
 
   t.equal(resulting.trim(), expected.trim());
-  t.deepEqual(tokens, {
-    resultA: '_source_resultA _b_aa _a_aa _c_aa',
-    resultB: '_source_resultB _c_bb _b_bb',
-  });
+  t.deepEqual(tokens, {continueButton: '_source_continueButton _button_button'});
   t.end();
 });

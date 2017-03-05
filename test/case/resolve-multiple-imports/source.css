@@ -1,10 +1,10 @@
-.app
+.resultA
 {
-  /**/
+  composes: aa from './b.css';
+  composes: aa from './a.css';
 }
 
-.body
+.resultB
 {
-  composes: yellow from './a.css';
-  composes: blue from './b.css';
+  composes: bb from './c.css';
 }

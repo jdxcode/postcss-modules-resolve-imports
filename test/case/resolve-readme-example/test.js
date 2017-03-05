@@ -3,7 +3,7 @@
 const setup = require('../../setup');
 const test = require('tape');
 
-test('resolve-imports', t => {
+test('resolve-readme-example', t => {
   const {expected, resulting, exports: tokens} = setup(
     'local-by-default',
     'extract-imports',

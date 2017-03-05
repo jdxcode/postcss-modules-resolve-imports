@@ -1,0 +1,5 @@
+.button
+{
+  /*common button styles*/
+  composes: green from '../color.css';
+}

@@ -1,5 +1,9 @@
-.blue
+.aa
 {
-  composes: green from './bg.css';
-  color: blue;
+  /**/
+}
+
+.bb
+{
+  /**/
 }

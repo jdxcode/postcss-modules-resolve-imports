@@ -1,4 +1,0 @@
-.body
-{
-  composes: yellow from './a.css';
-}

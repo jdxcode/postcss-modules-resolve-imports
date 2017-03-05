@@ -1,5 +1,4 @@
-.body
+.continueButton
 {
-  composes: aaa from 'nnn.css';
-  composes: bbb from './aaa/aaa.css';
+  composes: button from './lib/button/button.css';
 }

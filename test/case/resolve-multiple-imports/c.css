@@ -1,0 +1,9 @@
+.aa
+{
+  /**/
+}
+
+.bb
+{
+  composes: bb from './b.css';
+}

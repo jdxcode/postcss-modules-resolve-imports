@@ -1,13 +1,7 @@
-._nnn_aaa {
-    /* content of aaa */
+._color_green {
+    color: green
 }
-._nnn_bbb {
-    /* content of bbb */
+._button_button {
+    /*common button styles*/
 }
-._aaa_aaa {
-    background: red
-}
-._aaa_bbb {
-    background: yellow
-}
-._source_body {}
+._source_continueButton {}
