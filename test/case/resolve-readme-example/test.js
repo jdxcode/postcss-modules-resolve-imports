@@ -1,5 +1,6 @@
 'use strict';
 
+const resolveImports = require('../../../index');
 const setup = require('../../setup');
 const test = require('tape');
 
@@ -8,7 +9,7 @@ test('resolve-readme-example', t => {
     'local-by-default',
     'extract-imports',
     'scope',
-    'self'
+    resolveImports({explicitExports: true})
   )(__dirname);
 
   t.equal(resulting.trim(), expected.trim());

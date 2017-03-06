@@ -16,6 +16,9 @@ Transforms:
 into:
 
 ```css
+:export {
+  continueButton: _source_continueButton _button_button
+}
 ._button_button {
   /*common button styles*/
 }
