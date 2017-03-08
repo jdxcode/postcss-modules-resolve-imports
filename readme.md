@@ -27,7 +27,7 @@ into:
 }
 ```
 
-Should be used after [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope).
+**Note**: should be used after [postcss-modules-scope](https://github.com/css-modules/postcss-modules-scope).
 
 
 ## Options
