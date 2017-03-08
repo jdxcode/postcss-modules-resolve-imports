@@ -1,3 +1,4 @@
+/*  imported from lib/nested.css  */
 /* should be './lib/reset1.css' */
 @import url('./lib/reset1.css');
 /* should be './lib/reset2.css' */
@@ -6,4 +7,5 @@
     /* should be ./lib/spin-icon.svg */
     background: url(./lib/spin-icon.svg) 0 0 no-repeat
 }
+/*  imported from source.css  */
 ._source_relative {}
