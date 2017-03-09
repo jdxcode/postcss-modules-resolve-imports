@@ -2,9 +2,19 @@
 @import url('./reset1.css');
 /* should be './lib/reset2.css' */
 @import './reset2.css';
+/* should be 'anything-absolute1' */
+@import url('anything-absolute1');
+/* should be 'anything-absolute2' */
+@import 'anything-absolute2';
+/* should be '/root-based1' */
+@import url('/root-based1');
+/* should be '/root-based2' */
+@import '/root-based2';
 
 .url-decl
 {
-  /* should be ./lib/spin-icon.svg */
-  background: url(./spin-icon.svg) 0 0 no-repeat;
+  /* should be ./lib/spin-icon1.svg */
+  background: url(./spin-icon1.svg) 0 0 no-repeat;
+  /* should be ./lib/spin-icon2.svg */
+  background: url('./spin-icon2.svg') 0 0 no-repeat;
 }
