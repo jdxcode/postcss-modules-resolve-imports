@@ -2,10 +2,10 @@
 @import url('./reset1.css');
 /* should be './lib/reset2.css' */
 @import './reset2.css';
-/* should be 'anything-absolute1' */
-@import url('anything-absolute1');
-/* should be 'anything-absolute2' */
-@import 'anything-absolute2';
+/* should be 'lib/anything-non-root1' */
+@import url('anything-non-root1');
+/* should be 'lib/anything-non-root2' */
+@import 'anything-non-root2';
 /* should be '/root-based1' */
 @import url('/root-based1');
 /* should be '/root-based2' */
