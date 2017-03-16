@@ -11,6 +11,6 @@ test('resolve-paths', t => {
     'self'
   )(__dirname);
 
-  t.equal(resulting.trim(), expected.trim());
+  t.equal(resulting, expected);
   t.end();
 });

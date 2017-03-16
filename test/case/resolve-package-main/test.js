@@ -11,7 +11,7 @@ test('resolve-package-main', t => {
     'self'
   )(__dirname);
 
-  t.equal(resulting.trim(), expected.trim());
+  t.equal(resulting, expected);
   t.deepEqual(tokens, {continueButton: '_source_continueButton _my-awesome-button_button'});
   t.end();
 });

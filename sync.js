@@ -33,7 +33,7 @@ function resolveImportsPlugin({icssExports, resolve = {}} = {}) {
     const graph = {};
     const processor = createProcessor(result.processor.plugins);
     const rootPath = ast.source.input.file;
-    const rootTree = postcss.root();
+    const rootTree = postcss.root({raws: ast.raws});
 
     resolveDeps(ast, {opts: {from: rootPath, graph, resolve, rootPath, rootTree}, processor});
 

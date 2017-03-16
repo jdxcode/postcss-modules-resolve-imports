@@ -19,7 +19,7 @@ test('opts-alias', t => {
     })
   )(__dirname);
 
-  t.equal(resulting.trim(), expected.trim());
+  t.equal(resulting, expected);
   t.deepEqual(tokens, {continueButton: '_source_continueButton _button_button'});
   t.end();
 });
