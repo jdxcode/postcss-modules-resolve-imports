@@ -1,5 +1,7 @@
 .editorconfig
+.flowconfig
 .gitignore
 .travis.yml
+flow-typed
 test
 yarn.lock
