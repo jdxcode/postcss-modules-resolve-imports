@@ -8,7 +8,7 @@ const LOADER = {
   'local-by-default': () => require('postcss-modules-local-by-default'),
   'extract-imports': () => require('postcss-modules-extract-imports'),
   scope: () => new require('postcss-modules-scope')({generateScopedName}),
-  self: () => require('../index.js'),
+  self: () => require('../src/sync.js'),
 };
 
 module.exports = setup;

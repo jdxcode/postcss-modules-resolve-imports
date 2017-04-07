@@ -1,7 +1,7 @@
 'use strict';
 
 const {resolve} = require('path');
-const resolveImports = require('../../../index');
+const resolveImports = require('../../../src/sync');
 const setup = require('../../setup');
 const test = require('tape');
 

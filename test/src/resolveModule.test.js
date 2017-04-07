@@ -9,7 +9,7 @@ const {
   resolveAsDir,
   resolveAsFile,
   resolveModule,
-} = require('../../lib/resolveModule');
+} = require('../../src/resolveModule');
 const {parse, resolve} = require('path');
 const test = require('tape');
 
