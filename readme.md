@@ -102,6 +102,12 @@ Provide additional directories to check the modules in. Should be absolute paths
 ```
 
 
+## Development
+
+- `npm run autotest` will watch `src` and `test` for changes and retest
+- `npm run fix` fix the codestyle issues
+
+
 ## Reference Guides
 
 - Interoperable CSS: https://github.com/css-modules/icss
