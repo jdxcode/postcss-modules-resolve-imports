@@ -10,8 +10,12 @@
     "autotest": "chokidar {src,test}/*.js test/**/*.js -c 'npm test'",
     "compile": "babel --out-dir lib src",
     "fix": "eslint --fix **/*.js",
+    "prepublish": "npm run compile",
     "test": "tape test/**/*.test.js && tape test/**/test.js"
   },
+  "files": [
+    "lib"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/css-modules/postcss-modules-resolve-imports.git"
