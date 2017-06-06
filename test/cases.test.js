@@ -11,40 +11,45 @@ const postcssResolveImportsAsync = require('../lib/async');
 const postcssResolveImportsSync = require('../lib/sync');
 
 const casesdir = resolve(__dirname, 'case');
+const whitelist = [];
 
 describe('cases', () => {
   const cases = readdirSync(casesdir);
 
-  cases.forEach(casename => describe(casename.replace(/[^\w]/g, ' '), () => {
-    const sourceFilepath = resolve(casesdir, casename, 'source.css');
-    const expectedFilepath = resolve(casesdir, casename, 'expected.css');
+  cases.forEach(casename => {
+    if (whitelist.length && !whitelist.includes(casename)) return;
 
-    let source;
-    let expected;
-    let pluginsList;
+    describe(casename.replace(/[^\w]/g, ' '), () => {
+      const sourceFilepath = resolve(casesdir, casename, 'source.css');
+      const expectedFilepath = resolve(casesdir, casename, 'expected.css');
 
-    beforeAll(() => {
-      source = readFileSync(sourceFilepath, 'utf8');
-      expected = readFileSync(expectedFilepath, 'utf8');
-      pluginsList = require(resolve(casesdir, casename, 'plugins.js'));
-    });
+      let source;
+      let expected;
+      let pluginsList;
 
-    it('async', () => {
-      const plugins = resolveAsyncPlugins(pluginsList);
-      const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
+      beforeAll(() => {
+        source = readFileSync(sourceFilepath, 'utf8');
+        expected = readFileSync(expectedFilepath, 'utf8');
+        pluginsList = require(resolve(casesdir, casename, 'plugins.js'));
+      });
 
-      return lazyResult.then(result => {
-        expect(normalize(result.css)).toEqual(expected);
+      it('async', () => {
+        const plugins = resolveAsyncPlugins(pluginsList);
+        const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
+
+        return lazyResult.then(result => {
+          expect(normalize(result.css)).toEqual(expected);
+        });
+      });
+
+      it('sync', () => {
+        const plugins = resolveSyncPlugins(pluginsList);
+        const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
+
+        expect(normalize(lazyResult.css)).toEqual(expected);
       });
     });
-
-    it('sync', () => {
-      const plugins = resolveSyncPlugins(pluginsList);
-      const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
-
-      expect(normalize(lazyResult.css)).toEqual(expected);
-    });
-  }));
+  });
 });
 
 function castArray(value) {
