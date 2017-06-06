@@ -40,8 +40,8 @@ describe('cases', () => {
         const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
 
         return lazyResult.then(result => {
-          expect(expectedTokens).toEqual(result.root.exports);
-          expect(normalize(result.css)).toEqual(expected);
+          expect(result.root.exports).toEqual(expectedTokens);
+          expect(expected).toEqual(normalize(result.css));
         });
       });
 
@@ -49,8 +49,8 @@ describe('cases', () => {
         const plugins = resolveSyncPlugins(pluginsList);
         const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
 
-        expect(expectedTokens).toEqual(lazyResult.root.exports);
-        expect(normalize(lazyResult.css)).toEqual(expected);
+        expect(lazyResult.root.exports).toEqual(expectedTokens);
+        expect(expected).toEqual(normalize(lazyResult.css));
       });
     });
   });
