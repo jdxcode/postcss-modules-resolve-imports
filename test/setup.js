@@ -29,13 +29,13 @@ function setup(...plugins) {
     const sourcepath = resolve(directory, 'source.css');
 
     const source = readFileSync(sourcepath, 'utf8');
-    const lazyResult = runner.process(source, {from: sourcepath});
 
-    return {
-      exports: lazyResult.root.exports,
-      resulting: lazyResult.css.replace(/\r/g, ''),
-      source,
-    };
+    return runner.process(source, {from: sourcepath})
+      .then(result => ({
+        exports: result.root.exports,
+        resulting: result.css.replace(/\r/g, ''),
+        source,
+      }));
   }
 }
 
