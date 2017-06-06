@@ -25,11 +25,13 @@ describe('cases', () => {
 
       let source;
       let expected;
+      let expectedTokens;
       let pluginsList;
 
       beforeAll(() => {
         source = readFileSync(sourceFilepath, 'utf8');
         expected = readFileSync(expectedFilepath, 'utf8');
+        expectedTokens = require(resolve(casesdir, casename, 'expected'));
         pluginsList = require(resolve(casesdir, casename, 'plugins.js'));
       });
 
@@ -38,6 +40,7 @@ describe('cases', () => {
         const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
 
         return lazyResult.then(result => {
+          expect(expectedTokens).toEqual(result.root.exports);
           expect(normalize(result.css)).toEqual(expected);
         });
       });
@@ -46,6 +49,7 @@ describe('cases', () => {
         const plugins = resolveSyncPlugins(pluginsList);
         const lazyResult = postcss(plugins).process(source, {from: sourceFilepath});
 
+        expect(expectedTokens).toEqual(lazyResult.root.exports);
         expect(normalize(lazyResult.css)).toEqual(expected);
       });
     });
