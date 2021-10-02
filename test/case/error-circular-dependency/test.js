@@ -1,6 +1,4 @@
-'use strict';
-
-const setup = require('../../setup');
+import * as setup from '../../setup';
 
 test('error-circular-dependency', () => {
   expect(() => setup(

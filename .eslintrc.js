@@ -12,6 +12,5 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
-    strict: ['error', 'global'],
   },
 };

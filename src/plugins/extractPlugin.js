@@ -14,7 +14,6 @@ const TEMPORARY_MARK = 1;
 const importDeclaration = /^:import\((.+)\)$/;
 const moduleDeclaration = /^:(?:export|import\(.+\))$/;
 
-module.exports = resolveDeps;
 
 /**
  * Topological sorting is used to resolve the deps order,
@@ -122,3 +121,21 @@ function updateTranslations(translations, tokens) {
       translations[genericId] = tokens[token];
   }
 }
+
+/**
+ * Notes about postcss plugin's api
+ *
+ * Containers are iterated with .walk* methods.
+ * - Rule is actually a selector.
+ * - AtRule usually is rule, that starts from '@'.
+ * - Decl are actually css rules (keys prop, value).
+ *
+ * @see  http://api.postcss.org/AtRule.html#walkRules
+ */
+module.exports = () => ({
+  postcssPlugin: 'extract-plugin',
+  Once(root, {result}) {
+    resolveDeps(root, result);
+  }
+});
+module.exports.postcss = true;

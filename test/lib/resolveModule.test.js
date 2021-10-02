@@ -1,6 +1,4 @@
-'use strict';
-
-const {
+import {
   applyAliases,
   isDirectory,
   isFile,
@@ -9,8 +7,8 @@ const {
   resolveAsDir,
   resolveAsFile,
   resolveModule,
-} = require('../../lib/resolveModule');
-const {parse, resolve} = require('path');
+} from '../../src/resolveModule';
+import {parse, resolve} from 'path';
 
 test('applyAliases', () => {
   expect(applyAliases('a')).toBe('a');

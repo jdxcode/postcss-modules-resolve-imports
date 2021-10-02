@@ -1,8 +1,6 @@
-'use strict';
-
-const {join, parse, resolve} = require('path');
-const {readFileSync, statSync, realpathSync} = require('fs');
-const minimist = require('minimist');
+import {join, parse, resolve} from 'path';
+import {readFileSync, statSync, realpathSync} from 'fs';
+import minimist from 'minimist';
 
 const argv = minimist(process.argv.slice(2), {
   boolean: ['preserve-symlinks'],
@@ -11,16 +9,7 @@ const argv = minimist(process.argv.slice(2), {
 const PRESERVE_SYMLINKS = argv['preserve-symlinks'] ||
   String(process.env.NODE_PRESERVE_SYMLINKS) === '1';
 
-exports.applyAliases = applyAliases;
-exports.isDirectory = isDirectory;
-exports.isFile = isFile;
-exports.isNodeModule = isNodeModule;
-exports.nodeModulesPaths = nodeModulesPaths;
-exports.resolveAsDir = resolveAsDir;
-exports.resolveAsFile = resolveAsFile;
-exports.resolveModule = resolveModule;
-
-function applyAliases(filepath, aliases = {}) {
+export function applyAliases(filepath, aliases = {}) {
   const keys = Object.keys(aliases);
 
   for (let i = 0; i < keys.length; ++i) {
@@ -32,7 +21,7 @@ function applyAliases(filepath, aliases = {}) {
   return filepath;
 }
 
-function isDirectory(filepath) {
+export function isDirectory(filepath) {
   try {
     return statSync(filepath).isDirectory();
   } catch (er) {
@@ -41,7 +30,7 @@ function isDirectory(filepath) {
   }
 }
 
-function isFile(filepath) {
+export function isFile(filepath) {
   try {
     return statSync(filepath).isFile();
   } catch (er) {
@@ -51,7 +40,7 @@ function isFile(filepath) {
 }
 
 // ../ | ./ | / | c:\
-function isNodeModule(filepath) {
+export function isNodeModule(filepath) {
   return !/^(?:\.\.?(?:[\\/]|$)|\/|[A-Za-z]:[\\/])/.test(filepath);
 }
 
@@ -69,7 +58,7 @@ function nodeModulesPaths(start) {
   return paths.map(directory => join(directory, 'node_modules'));
 }
 
-function resolveAsDir(filepath, mainFile = 'index.css') {
+export function resolveAsDir(filepath, mainFile = 'index.css') {
   const pkgfile = join(filepath, 'package.json');
 
   if (isFile(pkgfile)) {
@@ -86,7 +75,7 @@ function resolveAsDir(filepath, mainFile = 'index.css') {
   return resolveAsFile(join(filepath, mainFile));
 }
 
-function resolveAsFile(filepath, extensions = []) {
+export function resolveAsFile(filepath, extensions = []) {
   if (isFile(filepath)) return filepath;
 
   for (let i = 0; i < extensions.length; ++i) {
@@ -98,7 +87,7 @@ function resolveAsFile(filepath, extensions = []) {
   }
 }
 
-function resolveModule(filepath, {cwd, resolve: resolvecfg = {}}) {
+export function resolveModule(filepath, {cwd, resolve: resolvecfg = {}}) {
   const preserveSymlinks = resolvecfg.preserveSymlinks !== undefined
     ? Boolean(resolvecfg.preserveSymlinks) : PRESERVE_SYMLINKS;
   const file = applyAliases(filepath, resolvecfg.alias);
