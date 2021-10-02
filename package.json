@@ -11,7 +11,7 @@
     "url": "git+https://github.com/css-modules/postcss-modules-resolve-imports.git"
   },
   "keywords": [],
-  "author": "Alexey Litvinov",
+  "author": "Jeff Dickey (@jdxcode)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/css-modules/postcss-modules-resolve-imports/issues"
@@ -21,12 +21,14 @@
     "postcss": "^6.0.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.15.7",
+    "@babel/core": "^7.15.5",
     "babel-preset-env": "^1.6.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.0",
-    "gulp-debug": "^3.1.0",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-debug": "^4.0.0",
     "jest": "^20.0.3",
     "postcss": "^6.0.1",
     "postcss-icss-values": "2.0.1",
@@ -40,10 +42,10 @@
     "minimist": "^1.2.0"
   },
   "scripts": {
-    "fix": "eslint --fix {lib,test}/**/*.js *.js",
+    "fix": "eslint --fix {src,test}/**/*.js *.js",
     "prepublish": "npm run transpile",
     "pretest": "npm run transpile",
-    "transpile": "gulp --cwd . --gulpfile scripts/gulpfile.js transpile",
+    "transpile": "babel src -d lib -s",
     "test": "jest"
   }
 }

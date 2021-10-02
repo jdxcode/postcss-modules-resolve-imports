@@ -4,7 +4,7 @@ const {parseValues, stringifyValues} = require('css-selector-tokenizer');
 const {relative, resolve, sep} = require('path');
 
 const isNonRootUrl = filepath => !/^\//.test(filepath);
-const isRelativeUrl = filepath => /^(?:\.\.?(?:[\\\/]|$))/.test(filepath);
+const isRelativeUrl = filepath => /^(?:\.\.?(?:[\\/]|$))/.test(filepath);
 
 exports.normalizeUrl = normalizeUrl;
 exports.isNonRootUrl = isNonRootUrl;

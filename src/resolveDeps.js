@@ -118,7 +118,7 @@ function updateTranslations(translations, tokens) {
   for (const genericId in translations) {
     const token = translations[genericId];
 
-    if (tokens.hasOwnProperty(token))
+    if (Object.prototype.hasOwnProperty.call(tokens, token))
       translations[genericId] = tokens[token];
   }
 }

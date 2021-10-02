@@ -52,7 +52,7 @@ function isFile(filepath) {
 
 // ../ | ./ | / | c:\
 function isNodeModule(filepath) {
-  return !/^(?:\.\.?(?:[\\\/]|$)|\/|[A-Za-z]:[\\\/])/.test(filepath);
+  return !/^(?:\.\.?(?:[\\/]|$)|\/|[A-Za-z]:[\\/])/.test(filepath);
 }
 
 function nodeModulesPaths(start) {
