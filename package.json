@@ -1,5 +1,5 @@
 {
-  "name": "postcss-modules-resolve-imports",
+  "name": "@jdxcode/postcss-modules-resolve-imports",
   "version": "1.3.0",
   "description": "Resolves ICSS imports",
   "type": "module",
