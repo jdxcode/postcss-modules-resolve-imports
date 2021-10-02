@@ -1,14 +1,16 @@
-'use strict';
+import {ResolveImports} from '../../../src/index';
+import setup from '../../setup';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const resolveImports = require('../../../index');
-const setup = require('../../setup');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('opts-main-file', () => {
   const {resulting, exports: tokens} = setup(
     'local-by-default',
     'extract-imports',
     'scope',
-    resolveImports({
+    ResolveImports({
       resolve: {
         mainFile: 'a.css',
       },

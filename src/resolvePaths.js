@@ -1,27 +1,19 @@
-'use strict';
-
-const {parseValues, stringifyValues} = require('css-selector-tokenizer');
-const {relative, resolve, sep} = require('path');
+import {parseValues, stringifyValues} from 'css-selector-tokenizer';
+import {relative, resolve, sep} from 'path';
 
 const isNonRootUrl = filepath => !/^\//.test(filepath);
 const isRelativeUrl = filepath => /^(?:\.\.?(?:[\\/]|$))/.test(filepath);
 
-exports.normalizeUrl = normalizeUrl;
-exports.isNonRootUrl = isNonRootUrl;
-exports.isRelativeUrl = isRelativeUrl;
-exports.iterateValues = iterateValues;
-exports.resolvePaths = resolvePaths;
-
-function normalizeUrl(value) {
+export function normalizeUrl(value) {
   return value.replace(/\\/g, '/');
 }
 
-function iterateValues(values, iteratee) {
+export function iterateValues(values, iteratee) {
   values.nodes.forEach(value =>
     value.nodes.forEach(item => iteratee(item)));
 }
 
-function resolvePaths(ast, from, to) {
+export function resolvePaths(ast, from, to) {
   // @import
   ast.walkAtRules(atrule => {
     if (atrule.name === 'import') {
@@ -54,7 +46,7 @@ function resolvePaths(ast, from, to) {
   });
 }
 
-function resolveUrl(url, from, to) {
+export function resolveUrl(url, from, to) {
   const resolvedUrl = relative(to, resolve(from, url));
 
   return normalizeUrl(

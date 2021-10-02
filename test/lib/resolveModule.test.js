@@ -7,13 +7,16 @@ import {
   resolveAsDir,
   resolveAsFile,
   resolveModule,
-} from '../../src/resolveModule';
-import {parse, resolve} from 'path';
+} from '../../src/resolveModule.js';
+import {parse, resolve, dirname} from 'path';
+import {fileURLToPath} from 'url';
 
 test('applyAliases', () => {
   expect(applyAliases('a')).toBe('a');
   expect(applyAliases('a', {a: 'b'})).toBe('b');
 });
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('isDirectory', () => {
   expect(isDirectory(__dirname)).toBe(true);

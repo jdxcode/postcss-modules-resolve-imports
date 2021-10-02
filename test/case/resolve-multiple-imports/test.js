@@ -1,6 +1,8 @@
-'use strict';
+import setup from '../../setup';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const setup = require('../../setup');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('resolve-multiple-imports', () => {
   const {resulting, exports: tokens} = setup(

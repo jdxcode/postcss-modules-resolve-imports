@@ -1,6 +1,8 @@
-'use strict';
+import setup from '../../setup.js';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const setup = require('../../setup');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('identity', () => {
   const {resulting} = setup()(__dirname);

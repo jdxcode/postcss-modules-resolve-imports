@@ -44,7 +44,7 @@ export function isNodeModule(filepath) {
   return !/^(?:\.\.?(?:[\\/]|$)|\/|[A-Za-z]:[\\/])/.test(filepath);
 }
 
-function nodeModulesPaths(start) {
+export function nodeModulesPaths(start) {
   const paths = [start];
   let parsed = parse(start);
 

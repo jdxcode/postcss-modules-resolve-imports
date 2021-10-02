@@ -1,13 +1,15 @@
-'use strict';
+import {ResolveImports} from '../../../src/index';
+import setup from '../../setup';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const resolveImports = require('../../../index');
-const setup = require('../../setup');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('resolve-readme-example', () => {
   const {resulting, exports: tokens} = setup(
     'values',
     'extract-imports',
-    resolveImports({icssExports: true})
+    ResolveImports({icssExports: true})
   )(__dirname);
 
   expect(resulting).toMatchSnapshot();

@@ -1,24 +1,22 @@
 import { readFileSync } from "fs";
 import { basename, resolve } from "path";
-import * as postcss from 'postcss';
+import postcss from 'postcss';
 
 import cssmodulesLocalByDefault from "postcss-modules-local-by-default";
 import cssmodulesExtractImports from "postcss-modules-extract-imports";
 import cssmodulesScope from "postcss-modules-scope";
 import cssmodulesValues from "postcss-icss-values";
-import cssmodulesResolveImports from "..";
+import {ResolveImports} from "../src/index.js";
 
 const LOADER = {
   values: () => cssmodulesValues,
   "local-by-default": () => cssmodulesLocalByDefault,
   "extract-imports": () => cssmodulesExtractImports,
-  scope: () => new cssmodulesScope({ generateScopedName }),
-  self: () => cssmodulesResolveImports,
+  scope: () => cssmodulesScope({ generateScopedName }),
+  self: () => ResolveImports(),
 };
 
-module.exports = setup;
-
-function setup(...plugins) {
+export default function setup(...plugins) {
   const loadedPlugins = plugins.map((name) =>
     typeof name === "string" ? LOADER[name]() : name
   );

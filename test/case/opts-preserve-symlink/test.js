@@ -1,14 +1,16 @@
-'use strict';
+import {ResolveImports} from '../../../src/index';
+import setup from '../../setup';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 
-const resolveImports = require('../../../index');
-const setup = require('../../setup');
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 test('opts-preserve-symlinks true', () => {
   const {resulting, exports: tokens} = setup(
     'local-by-default',
     'extract-imports',
     'scope',
-    resolveImports({
+    ResolveImports({
       resolve: {
         preserveSymlinks: true,
       },
@@ -24,7 +26,7 @@ test('opts-preserve-symlinks false', () => {
     'local-by-default',
     'extract-imports',
     'scope',
-    resolveImports({
+    ResolveImports({
       resolve: {
         preserveSymlinks: false,
       },
@@ -41,7 +43,7 @@ test('opts-preserve-symlinks default false', () => {
     'extract-imports',
     'scope',
     // nodejs behaviour: defaults to false
-    resolveImports({})
+    ResolveImports({})
   )(__dirname);
 
   expect(resulting).toMatchSnapshot();
