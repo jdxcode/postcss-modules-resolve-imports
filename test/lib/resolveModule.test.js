@@ -1,5 +1,6 @@
 'use strict';
 
+const { parse, resolve } = require('path');
 const {
   applyAliases,
   isDirectory,
@@ -10,11 +11,10 @@ const {
   resolveAsFile,
   resolveModule,
 } = require('../../lib/resolveModule');
-const {parse, resolve} = require('path');
 
 test('applyAliases', () => {
   expect(applyAliases('a')).toBe('a');
-  expect(applyAliases('a', {a: 'b'})).toBe('b');
+  expect(applyAliases('a', { a: 'b' })).toBe('b');
 });
 
 test('isDirectory', () => {
@@ -61,10 +61,10 @@ test('resolveAsFile', () => {
 });
 
 test('resolveModule', () => {
-  expect(resolveModule('awesome', {cwd: __dirname}))
+  expect(resolveModule('awesome', { cwd: __dirname }))
     .toBe(resolve(__dirname, 'node_modules/awesome/index.css'));
-  expect(resolveModule('awesome/index.css', {cwd: __dirname}))
+  expect(resolveModule('awesome/index.css', { cwd: __dirname }))
     .toBe(resolve(__dirname, 'node_modules/awesome/index.css'));
-  expect(resolveModule('main', {cwd: __dirname}))
+  expect(resolveModule('main', { cwd: __dirname }))
     .toBe(resolve(__dirname, 'node_modules/main/main.css'));
 });
