@@ -26,19 +26,16 @@
     "babel-preset-env": "^1.6.0",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.24.2",
-    "gulp": "^4.0.2",
-    "gulp-babel": "^8.0.0",
-    "gulp-debug": "^4.0.0",
-    "jest": "^20.0.3",
+    "jest": "^27.2.4",
     "postcss": "^6.0.1",
-    "postcss-icss-values": "2.0.1",
+    "postcss-icss-values": "2.0.2",
     "postcss-modules-extract-imports": "^1.1.0",
     "postcss-modules-local-by-default": "^1.2.0",
     "postcss-modules-scope": "^1.1.0"
   },
   "dependencies": {
-    "css-selector-tokenizer": "^0.7.0",
-    "icss-utils": "^3.0.1",
+    "css-selector-tokenizer": "^0.8.0",
+    "icss-utils": "^5.1.0",
     "minimist": "^1.2.0"
   },
   "scripts": {
